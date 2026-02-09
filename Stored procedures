@@ -1,0 +1,70 @@
+SELECT *
+FROM employee_salary
+WHERE salary >= 60000;
+
+#Creating a stored procedure
+CREATE PROCEDURE large_salaries()
+SELECT *
+FROM employee_salary
+WHERE salary >= 60000;
+
+CALL large_salaries();
+
+#Adding a new procedure, it counts as a separate procedure
+CREATE PROCEDURE large_salaries2()
+SELECT *
+FROM employee_salary
+WHERE salary >= 60000;
+SELECT *
+FROM employee_salary
+WHERE salary >= 50000;
+
+#Using the delimiter (e.g. $$) and a Begin and End to control what's in the stored procedure
+DELIMITER $$
+CREATE PROCEDURE large_salaries2()
+BEGIN
+SELECT *
+FROM employee_salary
+WHERE salary >= 60000;
+SELECT *
+FROM employee_salary
+WHERE salary >= 50000;
+END $$
+#Important to change delimiter to semicolon when ending the procedure
+DELIMITER ;
+
+CALL large_salaries2();
+
+#Inserting stored procedure using the left side bar
+USE parks_and_recreation;
+DROP procedure IF EXISTS large_salaries3;
+DELIMITER $$
+CREATE PROCEDURE large_salaries3()
+BEGIN
+SELECT *
+FROM employee_salary
+WHERE salary >= 60000;
+SELECT *
+FROM employee_salary
+WHERE salary >= 50000;
+END $$
+
+DELIMITER ;
+
+CALL large_order_totals3();
+
+#Stored procedures adding parameters
+USE parks_and_recreation;
+DROP procedure IF EXISTS large_salaries3;
+DELIMITER $$
+CREATE PROCEDURE large_salaries3(employee_id_param INT)
+BEGIN
+SELECT *
+FROM employee_salary
+WHERE salary >= 60000
+AND employee_id_param = employee_id;
+END $$
+
+DELIMITER ;
+
+CALL large_salaries3(1);
